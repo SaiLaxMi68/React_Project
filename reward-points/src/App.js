@@ -9,6 +9,7 @@ const App = ()=> {
   useEffect(()=>{
     async function getData() {
       try {
+        logEvent("API_CALL_INITIATED", "Fetching transaction data...");
         const result = await fetchTransactionData();
         setData(result);
         logEvent("FETCH_SUCCESS",result);

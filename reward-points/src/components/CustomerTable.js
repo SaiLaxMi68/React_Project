@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from "styled-components";
 import Pagination from './Pagination';
 import { rewardsPoints } from '../utils/util';
+import {customerTableHeaders,customerTitle} from "../constants/rewadsConstants";
 import CustomerDetails from './CustomerDetails';
 const TableWrapper = styled.div`
 margin:20px;
@@ -41,15 +42,20 @@ const CustomerTable = ({data})=> {
     const pageCount = (customers.length/ITEMS_PER_PAGE);
     const displayCustomers = customers.slice(currentPage*ITEMS_PER_PAGE,(currentPage+1)*ITEMS_PER_PAGE);
     const handlePageClick = (selected)=>setCurrentPage(selected.selected);
+    
+const getTransactionsByCustomer = (customerId) => {
+  return data.filter((t) => t.customerId === customerId);
+};
+
     return (
         <TableWrapper>
-            <Title>Customer List</Title>
+            <Title>{customerTitle}</Title>
             <Table>
                 <thead>
                     <tr>
-                        <Th>Customer ID</Th>
-                        <Th>Total Transactions</Th>
-                        <Th>Total Reward Points</Th>
+                       {customerTableHeaders &&customerTableHeaders.map((headerName)=>(
+                        <Th>{headerName}</Th>
+                       ))}
                     </tr>
                 </thead>
                 <tbody>
@@ -66,20 +72,9 @@ const CustomerTable = ({data})=> {
                     })}
                 </tbody>
             </Table>
-            {/* <paginateWrapper>
-            <ReactPaginate 
-            previousLabel={"<-Prev"}
-            nextLabel={"Next->"}
-            pageCount={pageCount}
-            onPageChange={handlePageClick}
-            containerClassName="pagination"
-            activeClassName='active'
-            disabledClassName='disabled'
-            />
-            </paginateWrapper> */}
             <Pagination currentPage={currentPage} totalPages={pageCount} onPageChange={setCurrentPage} />
             {selectedCustomer && (
-                <CustomerDetails customerId={selectedCustomer} transactions={data.filter(t=>t.customerId===selectedCustomer)} />
+                <CustomerDetails customerId={selectedCustomer} transactions={getTransactionsByCustomer(selectedCustomer)} />
             )}
         </TableWrapper>
     );

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PropTypes from 'prop-types';
 import { rewardsPoints } from '../utils/util';
-
+import { transactionListHeaders } from "../constants/rewadsConstants";
 const TransactionList = ({transactions,month,year}) => {
     const Title = styled.h2`
 text-align:center;
@@ -30,15 +30,14 @@ text-align:center;
 
     }
     return (
-        <div>
+        <>
             <Title>Transactions for {month} {year}</Title>
             <Table>
                 <thead>
                     <tr>
-                        <Th>Transaction ID</Th>
-                        <Th>Amount ($)</Th>
-                        <Th>Date</Th>
-                        <Th>Reward Points</Th>
+                        {transactionListHeaders && transactionListHeaders.map((item)=>(
+                            <Th>{item}</Th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
@@ -52,7 +51,7 @@ text-align:center;
                     ))}
                 </tbody>
            </Table>
-        </div>
+        </>
     );
 };
 
